@@ -232,8 +232,33 @@ if __name__ == '__main__':
 
 In order to run our fraud detection app we can navigate to the project folder and run the following commands:
 
-First, spin up the Kafka cluster:
+First, spin up the Kafka cluster:  
 ```docker-compose -f docker-compose.kafka.yml up```  
 
 ![start_cluster](/screenshots/start_kafka_cluster.png)
+
+
+Next, in a seperate terminal windown, we will start our generator and detector services:    
+```docker-compose -f docker-compose.yml up```
+
+![start_services](/screenshots/docker_compose_up.png)
+
+
+Next, in a seperate terminal window, using the kafka-console-consumer within our broker container, we can consume our legitimate transactions:  
+```docker-compose -f docker-compose.kafka.yml exec broker kafka-console-consumer --bootstrap-server localhost:9092 --topic streaming.transactions.legit```
+
+![legit_transactions](/screenshots/legit.png)
+
+
+Finally, in a seperate terminal window, also using the kafka-console-consumer within our broker container, we can consume our fraudulent transactions:
+```docker-compose -f docker-compose.kafka.yml exec broker kafka-console-consumer --bootstrap-server localhost:9092 --topic streaming.transactions.fraud```
+
+![fraud_transactions](/screenshots/fraud.png)
+
+We now have a working fraud detection pipeline!
+
+
+
+
+
 
