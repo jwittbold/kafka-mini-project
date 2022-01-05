@@ -156,9 +156,7 @@ if __name__ == '__main__':
 ```
 
 ### Transactions script 
-Our ```transactions.py``` script is called within our generator app.py and used to generate a series of random transactions.  
-
-Our ```transactions.py``` script should read as follows:
+Our ```transactions.py``` script is called within our generator app.py and used to generate a series of random transactions and reads as follows:  
 
 ```
 # generator/transactions.py
@@ -185,6 +183,48 @@ def create_random_transaction() -> dict:
         # Keep it simple: it's all dollars 
         'currency': 'USD'
     }    
+```
+
+### Detector App
+Our detector app utilizes the kafka-python KafkaConsumer module to consume transactions from the ```TRANSACTIONS_TOPIC```. Our detector apps custom logic stipulates that if any transaction is greater than or equal to $900 USD, it is to considered fraud. Transactions read in by our consumer are then written out to either ```FRAUD_TOPIC``` or ```LEGIT_TOPIC``` depending on the transaction amount.  
+
+Our detector app.py reads as follows:
+```
+# detector/app.py
+
+import os
+import json
+from kafka import KafkaConsumer, KafkaProducer
+
+
+KAFKA_BROKER_URL = os.environ.get('KAFKA_BROKER_URL')
+TRANSACTIONS_TOPIC = os.environ.get('TRANSACTIONS_TOPIC')
+LEGIT_TOPIC = os.environ.get('LEGIT_TOPIC')
+FRAUD_TOPIC = os.environ.get('FRAUD_TOPIC')
+
+
+def is_suspicious(transaction: dict) -> bool:
+    """Determine whether a transaction is suspicious."""
+    return transaction['amount'] >= 900
+
+if __name__ == '__main__':
+
+    consumer = KafkaConsumer(
+        TRANSACTIONS_TOPIC,
+        bootstrap_servers=KAFKA_BROKER_URL,
+        value_deserializer=lambda value: json.loads(value)
+    )
+
+    producer = KafkaProducer(
+        bootstrap_servers=KAFKA_BROKER_URL,
+        value_serializer=lambda value: json.dumps(value).encode('utf-8')
+    )
+
+    for message in consumer:
+        transaction: dict = message.value
+        topic = FRAUD_TOPIC if is_suspicious(transaction) else LEGIT_TOPIC
+        producer.send(topic, value=transaction)
+        print(topic, transaction) # DEBUG
 ```
 
 
