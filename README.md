@@ -270,11 +270,5 @@ Finally, in a seperate terminal window, also using the kafka-console-consumer wi
 ![fraud_transactions](/screenshots/fraud.png)
 
 
-Notice that all 'legit' amounts are below $900 while all 'fraud' amounts are above $900.  
+Notice that all 'legit' amounts are less than $900 while all 'fraud' amounts are greater than $900.  
 We now have a working fraud detection pipeline!
-
-
-
-
-
-
