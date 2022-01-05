@@ -16,8 +16,8 @@ This project implements a real-time fraud detection system utilizing Kafka, Pyth
 * kafka-python client
 
 ## Set-up 
-First we will create containerized versions of our Python generator and detector apps using the same Dockerfile for each. 
-Our Dockerfile should look like this:
+First we will create containerized versions of our Python generator and detector apps using the same Dockerfile for each.  
+Our identical Dockerfiles should read as follows:
 ```
 # Dockerfile
 FROM python:3.8 
