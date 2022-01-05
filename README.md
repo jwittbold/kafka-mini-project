@@ -10,10 +10,12 @@
 ## Project Info
 This project implements a real-time fraud detection system utilizing Kafka, Python, and Docker. It generates and processes a stream of transactions, identifying which transactions are fraudulent and which are legitimate while writing results out to respective fraudulent / legitimate Kafka topics. 
 
+
 ## Technologies
 * Docker
 * Python 3.8
 * kafka-python client
+
 
 ## Set-up 
 
@@ -35,6 +37,7 @@ Our final directory structure should appear as follows:
 2 directories, 9 files
 ```
 
+
 ### Dockerfiles
 First we will create containerized versions of our Python generator and detector apps using the same Dockerfile for each.  
 Our identical Dockerfiles should read as follows:
@@ -51,6 +54,7 @@ ADD ./ ./
 CMD ["python", "app.py"]
 ```
 
+
 ### Dependencies
 Since we will be utilizing the kafka-python client, both the generator and detector folders will need to include our dependencies, in the file 'requirements.txt' 
 
@@ -59,7 +63,8 @@ Since we will be utilizing the kafka-python client, both the generator and detec
 kafka-python
 ```
 
-### docker-compose files
+
+### docker-compose files (Isolating the Kafka cluster)
 Because we would like to use Kafka as a service, running independently from the applications that are using it, we will need to isolate the Kafka cluster.
 We accomplish this by creating two seperate docker-compose files, ```docker-compose.kafka.yml``` containing our Zookeeper and broker services, and ```docker-compose.yml``` which provides our application services.  
 
@@ -116,6 +121,8 @@ networks:
     name: kafka-network
 ```
 
+
+### Create Kafka network
 To allow both docker-compose compositions to access the same network, we must create an external Docker network. We can accomplish this by running:  
 ```docker network create kafka-network```
 
@@ -155,6 +162,7 @@ if __name__ == '__main__':
         sleep(SLEEP_TIME)
 ```
 
+
 ### Transactions script 
 Our ```transactions.py``` script is called within our generator app.py and used to generate a series of random transactions and reads as follows:  
 
@@ -184,6 +192,7 @@ def create_random_transaction() -> dict:
         'currency': 'USD'
     }    
 ```
+
 
 ### Detector App
 Our detector app utilizes the kafka-python KafkaConsumer module to consume transactions from the ```TRANSACTIONS_TOPIC```. Our detector app's custom logic stipulates that if any transaction is greater than or equal to $900 USD, it is to be considered fraud. Transactions read in by our consumer are then written out to either ```FRAUD_TOPIC``` or ```LEGIT_TOPIC``` depending on the transaction amount.  
