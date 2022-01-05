@@ -66,7 +66,7 @@ kafka-python
 
 ### docker-compose files (Isolating the Kafka cluster)
 Because we would like to use Kafka as a service, running independently from the applications that are using it, we will need to isolate the Kafka cluster.
-We accomplish this by creating two seperate docker-compose files, ```docker-compose.kafka.yml``` containing our Zookeeper and broker services, and ```docker-compose.yml``` which provides our application services.  
+This is accomplished by by creating two seperate docker-compose files, ```docker-compose.kafka.yml``` containing our Zookeeper and broker services, and ```docker-compose.yml``` which provides our application services.  
 
 Our docker-compose files should read as follows:
 
