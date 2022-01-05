@@ -39,7 +39,7 @@ Our final directory structure should appear as follows:
 
 
 ### Dockerfiles
-First we will create containerized versions of our Python generator and detector apps using the same Dockerfile for each.  
+First we will create containerized versions of our Python generator and detector apps using the same Dockerfile for each. 
 Our identical Dockerfiles should read as follows:
 ```
 # Dockerfile
@@ -56,7 +56,7 @@ CMD ["python", "app.py"]
 
 
 ### Dependencies
-Since we will be utilizing the kafka-python client, both the generator and detector folders will need to include our dependencies, in the file 'requirements.txt' 
+Since we will be utilizing the kafka-python client, both the generator and detector folders will need to include our (identical) dependencies, in the file 'requirements.txt' 
 
 ```
 # requirements.txt
