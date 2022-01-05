@@ -35,6 +35,7 @@ Our final directory structure should appear as follows:
 2 directories, 9 files
 ```
 
+### Dockerfiles
 First we will create containerized versions of our Python generator and detector apps using the same Dockerfile for each.  
 Our identical Dockerfiles should read as follows:
 ```
@@ -50,12 +51,15 @@ ADD ./ ./
 CMD ["python", "app.py"]
 ```
 
+### Dependencies
 Since we will be utilizing the kafka-python client, both the generator and detector folders will need to include our dependencies, in the file 'requirements.txt' 
 
 ```
 # requirements.txt
 kafka-python
 ```
+
+### docker-compose files
 Because we would like to use Kafka as a service, running independently from the applications that are using it, we will need to isolate the Kafka cluster.
 We accomplish this by creating two seperate docker-compose files, ```docker-compose.kafka.yml``` containing our Zookeeper and broker services, and ```docker-compose.yml``` which provides our application services.  
 
@@ -71,7 +75,7 @@ services:
     environment: 
       KAFKA_BROKER_URL: broker:9092
       TRANSACTIONS_TOPIC: queueing.transactions
-      TRANSACTIONS_PER_SECOND: 10
+      TRANSACTIONS_PER_SECOND: 1000
 
   detector:
     build: ./detector
@@ -116,7 +120,72 @@ To allow both docker-compose compositions to access the same network, we must cr
 ```docker network create kafka-network```
 
 
+### Generator App
+Our generator app utilizes the kafka-python client, and employs the KafkaProducer module and our python script ```transactions.py``` in order to emulate an endless stream of transactions produced to the ```TRANSACTIONS_TOPIC```  
 
+Our generator ```app.py``` reads as follows:
+```
+# generator/app.py
+
+import os
+import json
+from time import sleep
+from kafka import KafkaProducer
+from transactions import create_random_transaction
+
+
+KAFKA_BROKER_URL = os.environ.get('KAFKA_BROKER_URL')
+TRANSACTIONS_TOPIC = os.environ.get('TRANSACTIONS_TOPIC')
+TRANSACTIONS_PER_SECOND = float(os.environ.get('TRANSACTIONS_PER_SECOND'))
+SLEEP_TIME = 1 / TRANSACTIONS_PER_SECOND
+
+
+if __name__ == '__main__':
+
+    producer = KafkaProducer(
+        bootstrap_servers=KAFKA_BROKER_URL, 
+        # encode all values as JSON
+        value_serializer=lambda value: json.dumps(value).encode('utf-8')
+        )
+
+    while True:
+        transaction: dict = create_random_transaction()
+        producer.send(TRANSACTIONS_TOPIC, value=transaction)
+        print(transaction) # DEBUG
+        sleep(SLEEP_TIME)
+```
+
+### Transactions script 
+Our ```transactions.py``` script is called within our generator app.py and used to generate a series of random transactions.  
+
+Our ```transactions.py``` script should read as follows:
+
+```
+# generator/transactions.py
+
+from random import choices, randint
+from string import ascii_letters, digits
+
+account_chars: str = digits + ascii_letters
+
+def _random_account_id() -> str:
+    """Return a random account number made of 12 characters.""" 
+    return "".join(choices(account_chars, k=12))
+
+def _random_amount() -> float:
+    """Return a random amount between 1.00 and 1000.00.""" 
+    return randint(100, 1000000) / 100
+
+def create_random_transaction() -> dict: 
+    """Create a fake, randomised transaction.""" 
+    return {
+        'source': _random_account_id(), 
+        'target': _random_account_id(), 
+        'amount': _random_amount(),
+        # Keep it simple: it's all dollars 
+        'currency': 'USD'
+    }    
+```
 
 
 
