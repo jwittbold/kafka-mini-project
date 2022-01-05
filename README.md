@@ -31,7 +31,12 @@ ADD ./ ./
 CMD ["python", "app.py"]
 ```
 
-Since we will be utilizing the kafka-python client, both the generator and detector folders will need to include our dependencies, ```requirements.txt```, containing ```kafka-python```
+Since we will be utilizing the kafka-python client, both the generator and detector folders will need to include our dependencies, in the file requirements.txt. 
+
+```
+# requirements.txt
+kafka-python
+```
 
 Our directory structure should appear as follows:  
 ```
