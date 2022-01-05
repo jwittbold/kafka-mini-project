@@ -59,9 +59,6 @@ kafka-python
 Because we would like to use Kafka as a service, running independently from the applications that are using it, we will need to isolate the Kafka cluster.
 We accomplish this by creating two seperate docker-compose files, ```docker-compose.kafka.yml``` containing our Zookeeper and broker services, and ```docker-compose.yml``` which provides our application services.  
 
-To allow both docker-compose compositions to access the same network, we must create an external Docker network. We can accomplish this by running:  
-```docker network create kafka-network```
-
 Our docker-compose files should read as follows:
 
 ```
@@ -114,6 +111,9 @@ networks:
   default:
     name: kafka-network
 ```
+
+To allow both docker-compose compositions to access the same network, we must create an external Docker network. We can accomplish this by running:  
+```docker network create kafka-network```
 
 
 
