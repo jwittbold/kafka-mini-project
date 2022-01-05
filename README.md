@@ -8,7 +8,7 @@
 
 
 ## Project Info
-This project implements a real-time fraud detection system utilizing Kafka, Python, and Docker. It generates and processes a stream of transactions, identifying which transactions are fraudulent and which are legitimate while writing results out to respective fraudulent / legitimate Kafka topics. 
+This project implements a real-time fraud detection system utilizing Kafka, Python, and Docker. It generates and processes a stream of transactions, identifying which transactions are fraudulent and which are legitimate, while writing results out to respective fraudulent / legitimate Kafka topics. 
 
 
 ## Technologies
