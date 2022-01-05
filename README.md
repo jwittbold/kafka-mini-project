@@ -186,7 +186,7 @@ def create_random_transaction() -> dict:
 ```
 
 ### Detector App
-Our detector app utilizes the kafka-python KafkaConsumer module to consume transactions from the ```TRANSACTIONS_TOPIC```. Our detector apps custom logic stipulates that if any transaction is greater than or equal to $900 USD, it is to considered fraud. Transactions read in by our consumer are then written out to either ```FRAUD_TOPIC``` or ```LEGIT_TOPIC``` depending on the transaction amount.  
+Our detector app utilizes the kafka-python KafkaConsumer module to consume transactions from the ```TRANSACTIONS_TOPIC```. Our detector app's custom logic stipulates that if any transaction is greater than or equal to $900 USD, it is to be considered fraud. Transactions read in by our consumer are then written out to either ```FRAUD_TOPIC``` or ```LEGIT_TOPIC``` depending on the transaction amount.  
 
 Our detector app.py reads as follows:
 ```
@@ -228,4 +228,12 @@ if __name__ == '__main__':
 ```
 
 
+## Execution
+
+In order to run our fraud detection app we can navigate to the project folder and run the following commands:
+
+First, spin up the Kafka cluster:
+```docker-compose -f docker-compose.kafka.yml up```  
+
+![start_cluster](/screenshots/start_kafka_cluster.png)
 
