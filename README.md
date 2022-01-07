@@ -70,7 +70,7 @@ This is accomplished by by creating two seperate docker-compose files, ```docker
 
 Our docker-compose files should read as follows:
 
-```
+```dockerfile
 # docker-compose.yml
 version: "3"
 
@@ -95,7 +95,7 @@ networks:
     name: kafka-network
 ```
 AND
-```
+```dockerfile
 # docker-compose.kafka.yml
 version: "3"
 
@@ -167,7 +167,7 @@ if __name__ == '__main__':
 ### Transactions script 
 Our ```transactions.py``` script is called within our generator ```app.py``` and is used to generate a series of random transactions and reads as follows:  
 
-```
+```python
 # generator/transactions.py
 
 from random import choices, randint
@@ -199,7 +199,7 @@ def create_random_transaction() -> dict:
 Our detector app utilizes the kafka-python KafkaConsumer module to consume transactions from the ```TRANSACTIONS_TOPIC```. Our detector app's custom logic stipulates that if any transaction is greater than or equal to $900 USD, it is to be considered fraud. Transactions read in by our consumer are then written out to either ```FRAUD_TOPIC``` or ```LEGIT_TOPIC``` depending on the transaction amount.  
 
 Our detector ```app.py``` reads as follows:
-```
+```python
 # detector/app.py
 
 import os
