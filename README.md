@@ -41,7 +41,7 @@ Our final directory structure should appear as follows:
 ### Dockerfiles
 First we will create containerized versions of our Python generator and detector apps using the same Dockerfile for each. 
 Our identical Dockerfiles should read as follows:
-```
+```Dockerfile
 # Dockerfile
 FROM python:3.8 
 
@@ -70,7 +70,7 @@ This is accomplished by by creating two seperate docker-compose files, ```docker
 
 Our docker-compose files should read as follows:
 
-```
+```Dockerfile
 # docker-compose.yml
 version: "3"
 
