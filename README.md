@@ -132,7 +132,7 @@ To allow both docker-compose compositions to access the same network, we must cr
 Our generator app utilizes the kafka-python client, and employs the KafkaProducer module and our python script ```transactions.py``` in order to emulate an endless stream of transactions produced to the ```TRANSACTIONS_TOPIC```  
 
 Our generator ```app.py``` reads as follows:
-```
+```python
 # generator/app.py
 
 import os
