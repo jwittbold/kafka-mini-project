@@ -124,7 +124,8 @@ networks:
 
 ### Create Kafka network
 To allow both docker-compose compositions to access the same network, we must create an external Docker network. We can accomplish this by running:  
-```docker network create kafka-network```
+```Shell
+docker network create kafka-network```
 
 
 
