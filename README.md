@@ -58,7 +58,7 @@ CMD ["python", "app.py"]
 ### Dependencies
 Since we will be utilizing the kafka-python client, both the generator and detector folders will need to include our (identical) dependencies, in the file 'requirements.txt' 
 
-```
+```Text
 # requirements.txt
 kafka-python
 ```
