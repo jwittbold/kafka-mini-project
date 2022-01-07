@@ -70,7 +70,7 @@ This is accomplished by by creating two seperate docker-compose files, ```docker
 
 Our docker-compose files should read as follows:
 
-```dockerfile
+```docker
 # docker-compose.yml
 version: "3"
 
@@ -95,7 +95,7 @@ networks:
     name: kafka-network
 ```
 AND
-```dockerfile
+```docker
 # docker-compose.kafka.yml
 version: "3"
 
