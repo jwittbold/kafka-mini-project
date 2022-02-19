@@ -198,7 +198,7 @@ def create_random_transaction() -> dict:
 
 
 ### Detector App
-Our detector app utilizes the kafka-python KafkaConsumer module to consume transactions from the ```TRANSACTIONS_TOPIC```. Our detector app's custom logic stipulates that if any transaction is greater than or equal to $900 USD, it is to be considered fraud. Transactions read in by our consumer are then written out to either ```FRAUD_TOPIC``` or ```LEGIT_TOPIC``` depending on the transaction amount.  
+Our detector app utilizes the kafka-python KafkaConsumer module to consume transactions from the ```TRANSACTIONS_TOPIC```. Our detector app's logic stipulates that if any transaction is greater than or equal to $900 USD, it is to be considered fraud. Transactions read in by our consumer are then written out to either ```FRAUD_TOPIC``` or ```LEGIT_TOPIC``` depending on the transaction amount.  
 
 Our detector ```app.py``` reads as follows:
 ```python
